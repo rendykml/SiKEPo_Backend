@@ -1,14 +1,15 @@
 package handler
 
 import (
-    "net/http"
+	"net/http"
 
-    "backend/app"
-    "github.com/gofiber/fiber/v2/middleware/adaptor"
+	"github.com/gofiber/fiber/v2/adaptor"
+
+	"backend/app"
 )
 
 var server = app.CreateApp()
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-    adaptor.FiberApp(server)(w, r)
+	adaptor.HTTPHandler(server)(w, r)
 }
