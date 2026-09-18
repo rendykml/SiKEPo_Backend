@@ -13,7 +13,7 @@ func UserRoutes(
 ) {
 
 	// Public routes
-	users := app.Group("/api/users")
+	users := app.Group("/api/users", middleware.RequireAuth)
 	users.Post("/login", controller.Login)
 
 	// Protected admin routes
