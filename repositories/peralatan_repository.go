@@ -80,6 +80,7 @@ func (r *peralatanRepository) FindByID(
 	err := r.db.
 		Preload("KategoriPeralatan").
 		Where("id = ?", id).
+		Where("deleted_at IS NULL").
 		First(&data).
 		Error
 
@@ -292,6 +293,15 @@ func (r *peralatanRepository) CreatePeralatan(
 					&detail,
 				); err != nil {
 					return err
+				}
+
+				if detail.JenisLabel == "" {
+					detail.JenisLabel = "calibration"
+				}
+				if detail.JenisLabel != "calibration" &&
+					detail.JenisLabel != "limited calibration" &&
+					detail.JenisLabel != "do not use" {
+					return fmt.Errorf("jenis_label tidak valid: %q", detail.JenisLabel)
 				}
 
 				detail.PeralatanID =
